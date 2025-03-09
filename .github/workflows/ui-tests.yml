@@ -26,4 +26,4 @@ jobs:
           pip install selenium webdriver-manager pytest
 
       - name: Run UI Tests
-        run: pytest tests/ui_tests.py
+        run: pytest tests/test_script.py
