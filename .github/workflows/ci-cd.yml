@@ -3,18 +3,18 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  # 監聽 main 分支的變更
+      - main
   pull_request:
     branches:
       - main
 
 jobs:
   test:
-    runs-on: ubuntu-latest  # 使用 Ubuntu 運行
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3  # 下載最新代碼
+        uses: actions/checkout@v3
 
       # 設定 Node.js 環境
       - name: Set up Node.js
@@ -26,17 +26,18 @@ jobs:
       - name: Install Newman
         run: npm install -g newman
 
-      # 運行 API 測試（如果你還沒有 API 測試文件，這一步先忽略）
+      # 運行 API 測試
       - name: Run API Tests
-        run: newman run your-collection.json || exit 1  # 這裡請改成你的 API 測試 JSON 檔案名稱
+        run: newman run api-tests.json
 
-      # 設定 Selenium 環境
-      - name: Install Selenium
+      # 安裝 Chrome 和 WebDriver（Selenium 需要）
+      - name: Install Chrome and Chromedriver
         run: |
           sudo apt update
           sudo apt install -y chromium-browser
+          sudo apt install -y chromium-chromedriver
           pip install selenium
 
-      # 運行 UI 測試（請確保你的專案有 `test_script.py`）
+      # 運行 UI 測試
       - name: Run UI Tests
-        run: python test_script.py || exit 1
+        run: python test_script.py
