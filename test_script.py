@@ -20,7 +20,7 @@ driver = webdriver.Chrome(service=service, options=options)
 
 try:
     driver.get("https://students.senecapolytechnic.ca/")
-    print("✅ Successfully opened the student portal")
+    print("✅ Successfully opened the student portal1")
 
     link = driver.find_element(By.LINK_TEXT, "Academic")
     link.click()
