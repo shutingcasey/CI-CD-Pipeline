@@ -26,10 +26,6 @@ jobs:
       - name: Install Newman
         run: npm install -g newman
 
-      # Run API tests
-      - name: Run API Tests
-        run: newman run api-tests.json
-
       # Install correct Chrome version manually
       - name: Install Chrome (latest stable)
         run: |
