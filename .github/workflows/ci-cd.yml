@@ -16,28 +16,44 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 設定 Node.js 環境
+      # Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      # 安裝 Postman Newman
+      # Install Postman Newman
       - name: Install Newman
         run: npm install -g newman
 
-      # # 運行 API 測試
-      # - name: Run API Tests
-      #   run: newman run api-tests.json
+      # Run API tests
+      - name: Run API Tests
+        run: newman run api-tests.json
 
-      # 安裝 Chrome 和 WebDriver（Selenium 需要）
-      - name: Install Chrome and Chromedriver
+      # Install correct Chrome version manually
+      - name: Install Chrome (latest stable)
         run: |
           sudo apt update
-          sudo apt install -y chromium-browser
-          sudo apt install -y chromium-chromedriver
-          pip install selenium
+          sudo apt install -y wget curl unzip
+          wget -q -O google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome.deb || sudo apt -f install -y
+          rm google-chrome.deb
 
-      # 運行 UI 測試
+      # Install compatible ChromeDriver
+      - name: Install ChromeDriver
+        run: |
+          CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d'.' -f1)
+          echo "Detected Chrome major version: $CHROME_VERSION"
+          wget -q -O chromedriver.zip https://chromedriver.storage.googleapis.com/${CHROME_VERSION}.0.6998.35/chromedriver_linux64.zip
+          unzip chromedriver.zip
+          sudo mv chromedriver /usr/local/bin/
+          rm chromedriver.zip
+          chmod +x /usr/local/bin/chromedriver
+
+      # Install Selenium
+      - name: Install Selenium
+        run: pip install selenium
+
+      # Run UI Tests
       - name: Run UI Tests
         run: python test_script.py
