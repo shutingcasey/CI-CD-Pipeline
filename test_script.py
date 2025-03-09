@@ -53,4 +53,4 @@ except Exception as e:
 
 finally:
     driver.quit()
-    print("🔚 Test completed, browser closed")
+    print("Test completed, browser closed")
