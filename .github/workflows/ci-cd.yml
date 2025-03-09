@@ -22,33 +22,17 @@ jobs:
         with:
           node-version: '18'
 
-      # Install Postman Newman
-      - name: Install Newman
-        run: npm install -g newman
+      # # Install Postman Newman
+      # - name: Install Newman
+      #   run: npm install -g newman
 
-      # Install correct Chrome version manually
-      - name: Install Chrome (latest stable)
-        run: |
-          sudo apt update
-          sudo apt install -y wget curl unzip
-          wget -q -O google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo dpkg -i google-chrome.deb || sudo apt -f install -y
-          rm google-chrome.deb
+      # # Run API tests
+      # - name: Run API Tests
+      #   run: newman run api-tests.json
 
-      # Install compatible ChromeDriver
-      - name: Install ChromeDriver
-        run: |
-          CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d'.' -f1)
-          echo "Detected Chrome major version: $CHROME_VERSION"
-          wget -q -O chromedriver.zip https://chromedriver.storage.googleapis.com/${CHROME_VERSION}.0.6998.35/chromedriver_linux64.zip
-          unzip chromedriver.zip
-          sudo mv chromedriver /usr/local/bin/
-          rm chromedriver.zip
-          chmod +x /usr/local/bin/chromedriver
-
-      # Install Selenium
-      - name: Install Selenium
-        run: pip install selenium
+      # Install dependencies including WebDriver Manager
+      - name: Install Python dependencies
+        run: pip install selenium webdriver-manager
 
       # Run UI Tests
       - name: Run UI Tests
