@@ -9,31 +9,30 @@ on:
       - main
 
 jobs:
-  test:
+  # api_tests:
+  #   name: API Testing
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+
+  #     - name: Install Newman
+  #       run: npm install -g newman
+
+  #     - name: Run API Tests
+  #       run: newman run api-tests.json
+
+  ui_tests:
+    name: UI Testing
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Set up Node.js environment
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      # # Install Postman Newman
-      # - name: Install Newman
-      #   run: npm install -g newman
-
-      # # Run API tests
-      # - name: Run API Tests
-      #   run: newman run api-tests.json
-
-      # Install dependencies including WebDriver Manager
       - name: Install Python dependencies
         run: pip install selenium webdriver-manager
 
-      # Run UI Tests
       - name: Run UI Tests
         run: python test_script.py
